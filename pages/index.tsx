@@ -1,8 +1,16 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { assertValidExecutionArguments } from "graphql/execution/execute";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import axios from "axios";
 
 export default function Home() {
+  const fetchData = async () => {
+    await axios.get("/api/dmx-trades").then((response) => {
+      console.log(response.data);
+    });
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -17,7 +25,7 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
 
@@ -31,6 +39,8 @@ export default function Home() {
             <h2>Learn &rarr;</h2>
             <p>Learn about Next.js in an interactive course with quizzes!</p>
           </a>
+
+          <button onClick={fetchData}>FETCH DATA</button>
 
           <a
             href="https://github.com/vercel/next.js/tree/canary/examples"
@@ -60,12 +70,12 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
+  );
 }
