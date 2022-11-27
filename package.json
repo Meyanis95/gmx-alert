@@ -23,5 +23,7 @@
     "react-dom": "18.2.0",
     "typescript": "4.9.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node-telegram-bot-api": "^0.57.6"
+  }
 }

@@ -2,6 +2,8 @@ import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const APIURL = "https://api.thegraph.com/subgraphs/name/nissoh/gmx-arbitrum";
 
+const setOfAddressToTarget = "0x0faa687dc8ca357e4aa4866aa10f9eca193d979b";
+
 const tradesQuery = `
   query {
     trades {
