@@ -25,8 +25,8 @@ const shortenAddress = (address: string) => {
 };
 
 export function sendMessage(trade: Trade): any {
-  const token = process.env.NEXT_PUBLIC_TG_KEY;
-  const chat_id = process.env.NEXT_PUBLIC_CHAT_ID;
+  const token = process.env.TG_KEY;
+  const chat_id = process.env.CHAT_ID;
   const text = `New trade from ${shortenAddress(trade.account)}`;
   return axios
     .post(
