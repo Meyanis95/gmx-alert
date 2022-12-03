@@ -1,4 +1,3 @@
-import sendMessage from "./api/helpers/telegramBot";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -30,7 +29,7 @@ export default function Home() {
         </p>
 
         <div className={styles.grid}>
-          <button onClick={sendMessage}>FETCH DATA</button>
+          {/* <button onClick={sendMessage}>FETCH DATA</button> */}
         </div>
       </main>
 
