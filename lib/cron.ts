@@ -48,17 +48,17 @@ const addresses = [
 export async function cron() {
   const lastTrades = await getLastTrades();
 
-  lastTrades.map((element: Trade) => {
+  lastTrades.map(async (element: Trade) => {
     for (let i = 0; i < addresses.length; i++) {
       if (addresses[i] === element.account) {
-        if (!checkIfTxInDb(element.id)) {
+        let isInDb = await checkIfTxInDb(element.id);
+        if (!isInDb) {
           addTxInDb(element.id);
           sendMessage(element);
         }
       }
     }
   });
-  console.log(typeof lastTrades);
   return lastTrades;
   //Fetch data form TheGraph
   //Check if new trades

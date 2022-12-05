@@ -9,7 +9,7 @@ async function handler(_req: NextApiRequest, res: NextApiResponse) {
   // }
   try {
     const response = await cron();
-    console.log("Cron job successful! Response:", response);
+    //console.log("Cron job successful! Response:", response);
     res.status(200).json(response);
   } catch (err) {
     console.log("Cron job error:", err);

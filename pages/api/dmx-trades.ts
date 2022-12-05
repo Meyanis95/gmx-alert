@@ -1,6 +1,7 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import checkIfTxInDb from "./db/checkIfTxInDb";
 import addTxInDb from "./db/addTxInDb";
+import { sendMessage } from "@/lib/telegram";
 
 const APIURL = "https://api.thegraph.com/subgraphs/name/nissoh/gmx-arbitrum";
 
@@ -67,13 +68,14 @@ export default function handler(req: any, res: any) {
       })
       .then((data: any) => {
         //console.log("Subgraph data: ", data);
-        data.data.trades.forEach(async (element: any) => {
+        data.data.trades.map(async (element: any) => {
           for (let i = 0; i < addresses.length; i++) {
-            if (element.account === addresses[i]) {
+            if (addresses[i] === element.account) {
               let isInDb = await checkIfTxInDb(element.id);
               console.log(isInDb);
               if (!isInDb) {
                 addTxInDb(element.id);
+                sendMessage(element);
               }
             }
           }
