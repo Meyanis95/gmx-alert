@@ -1,8 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { verifySignature } from "@upstash/qstash/nextjs";
 import { getLastTrades } from "./dmx";
-import checkIfTxInDb from "pages/api/db/checkIfTxInDb";
-import addTxInDb from "pages/api/db/addTxInDb";
+import checkIfTxInDb from "@/lib/db/checkIfTxInDb";
+import addTxInDb from "@/lib/db/addTxInDb";
 import { sendMessage } from "./telegram";
 
 interface Trade {

@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import checkIfTxInDb from "../pages/api/db/checkIfTxInDb";
-import addTxInDb from "../pages/api/db/addTxInDb";
+import checkIfTxInDb from "./db/checkIfTxInDb";
+import addTxInDb from "./db/addTxInDb";
 import { json } from "stream/consumers";
 
 interface Trade {

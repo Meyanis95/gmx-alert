@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import checkIfTxInDb from "./db/checkIfTxInDb";
-import addTxInDb from "./db/addTxInDb";
+import checkIfTxInDb from "../../lib/db/checkIfTxInDb";
+import addTxInDb from "../../lib/db/addTxInDb";
 import { sendMessage } from "@/lib/telegram";
 
 const APIURL = "https://api.thegraph.com/subgraphs/name/nissoh/gmx-arbitrum";
