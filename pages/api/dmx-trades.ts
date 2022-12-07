@@ -1,6 +1,22 @@
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { checkIfTxInDb, addTxInDb } from "../../lib/db/db";
-import { getDate } from "@/lib/helpers/getDate";
+import { getLastTrades } from "@/lib/dmx";
+
+interface Trade {
+  __typename: string;
+  id: string;
+  account: string;
+  collateralToken: string;
+  collateralDelta: string;
+  collateral: string;
+  timestamp: Date;
+  isLong: boolean;
+  closedPosition: boolean | null;
+  liquidatedPosition: boolean | null;
+  settledTimestamp: boolean | null;
+  sizeDelta: string;
+  size: string;
+  averagePrice: string;
+}
 
 const APIURL = "https://api.thegraph.com/subgraphs/name/nissoh/gmx-arbitrum";
 
@@ -20,79 +36,30 @@ const addresses = [
   "0xb7dc41706c8d093ab3c83aff6146438813a2946d",
 ];
 
-//, $timestamp: String
-
-const tradesQuery = (timestamp: any) => {
-  return `
-  query($first: Int) {
-    trades(
-      first: $first,
-      where: {timestamp_gte: ${timestamp}}
-    ) {
-        id
-        account
-        collateralToken
-        collateralDelta
-        collateral
-        timestamp
-        isLong
-        closedPosition {
-          id
-        }
-        liquidatedPosition {
-          id
-        }
-        settledTimestamp
-        sizeDelta
-        size
-        averagePrice
-        settledTimestamp
-        closedPosition {
-          id
-        }
-      }
-  }
-`;
-};
-
-const client = new ApolloClient({
-  uri: APIURL,
-  cache: new InMemoryCache(),
-});
-
-export default function handler(req: any, res: any) {
+export default async function handler(req: any, res: any) {
   if (req.method === "GET") {
-    let timestamp = getDate();
+    try {
+      const lastTrades = await getLastTrades();
 
-    const trades = tradesQuery(timestamp);
-    client
-      .query({
-        query: gql(trades),
-        variables: {
-          first: 1000,
-        },
-      })
-      .then((data: any) => {
-        //console.log("Subgraph data: ", data);
-        data.data.trades.map(async (element: any) => {
-          for (let i = 0; i < addresses.length; i++) {
-            if (addresses[i] === element.account) {
-              let isInDb = await checkIfTxInDb(element.id);
-              console.log(isInDb);
-              if (!isInDb) {
-                //addTxInDb(element.id);
-                //sendMessage(element);
-              }
+      lastTrades.map(async (element: Trade) => {
+        for (let i = 0; i < addresses.length; i++) {
+          if (addresses[i] === element.account) {
+            //Check if new trades
+            let isInDb = await checkIfTxInDb(element.id);
+            console.log(isInDb);
+            if (!isInDb) {
+              //If new trades store them + send notification on TG
+              //addTxInDb(element.id);
+              //sendMessage(element);
             }
           }
-        });
-
-        res.status(200).json({ trades: data.data.trades });
-      })
-      .catch((err: any) => {
-        console.log("Error fetching data: ", err);
-        res.status(400).json({ error: err.message });
+        }
       });
+      res.status(200).json({ trades: lastTrades });
+    } catch (error: any) {
+      console.log("Error fetching data: ", error);
+      res.status(400).json({ error: error.message });
+    }
   } else {
     // Handle any other HTTP method
   }

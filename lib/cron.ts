@@ -37,20 +37,24 @@ const addresses = [
 //Here I'll do all my fetch and checks
 export async function cron() {
   //Fetch data form TheGraph
-  const lastTrades = await getLastTrades();
+  try {
+    const lastTrades = await getLastTrades();
 
-  lastTrades.map(async (element: Trade) => {
-    for (let i = 0; i < addresses.length; i++) {
-      if (addresses[i] === element.account) {
-        //Check if new trades
-        let isInDb = await checkIfTxInDb(element.id);
-        if (!isInDb) {
-          //If new trades store them + send notification on TG
-          addTxInDb(element.id);
-          sendMessage(element);
+    lastTrades.map(async (element: Trade) => {
+      for (let i = 0; i < addresses.length; i++) {
+        if (addresses[i] === element.account) {
+          //Check if new trades
+          let isInDb = await checkIfTxInDb(element.id);
+          if (!isInDb) {
+            //If new trades store them + send notification on TG
+            await addTxInDb(element.id);
+            sendMessage(element);
+          }
         }
       }
-    }
-  });
-  return lastTrades;
+    });
+    return lastTrades;
+  } catch (error) {
+    return error;
+  }
 }
