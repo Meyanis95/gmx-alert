@@ -19,7 +19,7 @@ export async function checkIfTxInDb(txId: string) {
       return true;
     }
   } catch (error) {
-    console.log(error);
+    return error;
   }
 }
 
@@ -35,6 +35,6 @@ export async function addTxInDb(txId: string) {
       );
     }
   } catch (error) {
-    console.log(error);
+    return error;
   }
 }

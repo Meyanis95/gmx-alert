@@ -1,5 +1,6 @@
 import { checkIfTxInDb, addTxInDb } from "../../lib/db/db";
 import { getLastTrades } from "@/lib/dmx";
+import { sendMessage } from "@/lib/telegram";
 
 interface Trade {
   __typename: string;
@@ -49,8 +50,8 @@ export default async function handler(req: any, res: any) {
             console.log(isInDb);
             if (!isInDb) {
               //If new trades store them + send notification on TG
-              //addTxInDb(element.id);
-              //sendMessage(element);
+              addTxInDb(element.id);
+              sendMessage(element);
             }
           }
         }
