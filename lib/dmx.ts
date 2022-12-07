@@ -1,7 +1,5 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import checkIfTxInDb from "./db/checkIfTxInDb";
-import addTxInDb from "./db/addTxInDb";
-import { json } from "stream/consumers";
+import { getDate } from "./helpers/getDate";
 
 interface Trade {
   __typename: string;
@@ -32,11 +30,12 @@ type ErrorResponse = {
 
 const APIURL = "https://api.thegraph.com/subgraphs/name/nissoh/gmx-arbitrum";
 
-const tradesQuery = `
+const tradesQuery = (timestamp: any) => {
+  return `
   query($first: Int) {
     trades(
       first: $first,
-      where: {timestamp_gte: 1668445986}
+      where: {timestamp_gte: ${timestamp}}
     ) {
         id
         account
@@ -62,6 +61,7 @@ const tradesQuery = `
       }
   }
 `;
+};
 
 const client = new ApolloClient({
   uri: APIURL,
@@ -69,9 +69,11 @@ const client = new ApolloClient({
 });
 
 export async function getLastTrades() {
+  let timestamp = getDate();
+  const trades = tradesQuery(timestamp);
   return client
     .query({
-      query: gql(tradesQuery),
+      query: gql(trades),
       variables: {
         first: 1000,
       },

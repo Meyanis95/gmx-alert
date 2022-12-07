@@ -1,7 +1,6 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import checkIfTxInDb from "../../lib/db/checkIfTxInDb";
-import addTxInDb from "../../lib/db/addTxInDb";
-import { sendMessage } from "@/lib/telegram";
+import { checkIfTxInDb, addTxInDb } from "../../lib/db/db";
+import { getDate } from "@/lib/helpers/getDate";
 
 const APIURL = "https://api.thegraph.com/subgraphs/name/nissoh/gmx-arbitrum";
 
@@ -21,11 +20,14 @@ const addresses = [
   "0xb7dc41706c8d093ab3c83aff6146438813a2946d",
 ];
 
-const tradesQuery = `
+//, $timestamp: String
+
+const tradesQuery = (timestamp: any) => {
+  return `
   query($first: Int) {
     trades(
       first: $first,
-      where: {timestamp_gte: 1668445986}
+      where: {timestamp_gte: ${timestamp}}
     ) {
         id
         account
@@ -51,6 +53,7 @@ const tradesQuery = `
       }
   }
 `;
+};
 
 const client = new ApolloClient({
   uri: APIURL,
@@ -59,9 +62,12 @@ const client = new ApolloClient({
 
 export default function handler(req: any, res: any) {
   if (req.method === "GET") {
+    let timestamp = getDate();
+
+    const trades = tradesQuery(timestamp);
     client
       .query({
-        query: gql(tradesQuery),
+        query: gql(trades),
         variables: {
           first: 1000,
         },
@@ -74,14 +80,13 @@ export default function handler(req: any, res: any) {
               let isInDb = await checkIfTxInDb(element.id);
               console.log(isInDb);
               if (!isInDb) {
-                addTxInDb(element.id);
-                sendMessage(element);
+                //addTxInDb(element.id);
+                //sendMessage(element);
               }
             }
           }
         });
 
-        //console.log(database);
         res.status(200).json({ trades: data.data.trades });
       })
       .catch((err: any) => {

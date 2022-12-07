@@ -1,6 +1,5 @@
 import { getLastTrades } from "./dmx";
-import checkIfTxInDb from "@/lib/db/checkIfTxInDb";
-import addTxInDb from "@/lib/db/addTxInDb";
+import { checkIfTxInDb, addTxInDb } from "@/lib/db/db";
 import { sendMessage } from "./telegram";
 
 interface Trade {
@@ -44,13 +43,16 @@ const addresses = [
 ];
 //Here I'll do all my fetch and checks
 export async function cron() {
+  //Fetch data form TheGraph
   const lastTrades = await getLastTrades();
 
   lastTrades.map(async (element: Trade) => {
     for (let i = 0; i < addresses.length; i++) {
       if (addresses[i] === element.account) {
+        //Check if new trades
         let isInDb = await checkIfTxInDb(element.id);
         if (!isInDb) {
+          //If new trades store them + send notification on TG
           addTxInDb(element.id);
           sendMessage(element);
         }
@@ -58,7 +60,4 @@ export async function cron() {
     }
   });
   return lastTrades;
-  //Fetch data form TheGraph
-  //Check if new trades
-  //If new trades store them + send notification on TG
 }

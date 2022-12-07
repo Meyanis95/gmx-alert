@@ -2,13 +2,14 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import axios from "axios";
+import { getDate } from "@/lib/helpers/getDate";
 
 export default function Home() {
-  const fetchData = async () => {
-    await axios.get("/api/dmx-trades").then((response) => {
-      console.log(response.data);
-    });
-  };
+  // const fetchData = async () => {
+  //   await axios.get("/api/dmx-trades").then((response) => {
+  //     console.log(response.data);
+  //   });
+  // };
 
   return (
     <div className={styles.container}>
@@ -29,7 +30,7 @@ export default function Home() {
         </p>
 
         <div className={styles.grid}>
-          {/* <button onClick={sendMessage}>FETCH DATA</button> */}
+          {/* <button onClick={getDate}>FETCH DATA</button> */}
         </div>
       </main>
 
