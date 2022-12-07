@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { cron } from "@/lib/cron";
-import { verifySignature } from "@upstash/qstash/nextjs";
 
 export default async function handler(
   _req: NextApiRequest,
