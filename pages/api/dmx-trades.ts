@@ -35,14 +35,16 @@ const addresses = [
   "0xb09c48582db808c8043d0eb982b9610d79d9c0e1",
   "0x36a26590360797e9795d31c103f87f79e52ecf7a",
   "0xb7dc41706c8d093ab3c83aff6146438813a2946d",
+  "0x8d053c8f72ce7320ac63377d1ab73076e61f67b2",
 ];
 
 export default async function handler(req: any, res: any) {
   if (req.method === "GET") {
     try {
       const lastTrades = await getLastTrades();
-
+      let count = 0;
       lastTrades.map(async (element: Trade) => {
+        count++;
         for (let i = 0; i < addresses.length; i++) {
           if (addresses[i] === element.account) {
             //Check if new trades
@@ -56,6 +58,7 @@ export default async function handler(req: any, res: any) {
           }
         }
       });
+      console.log(count);
       res.status(200).json({ trades: lastTrades });
     } catch (error: any) {
       console.log("Error fetching data: ", error);
