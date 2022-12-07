@@ -1,4 +1,5 @@
 import axios from "axios";
+import { shortenAddress } from "./helpers/shortenAddress";
 
 interface Trade {
   __typename: string;
@@ -16,13 +17,6 @@ interface Trade {
   size: string;
   averagePrice: string;
 }
-
-const shortenAddress = (address: string) => {
-  return `${address.slice(0, 6)}...${address.slice(
-    address.length - 4,
-    address.length
-  )}`;
-};
 
 export function sendMessage(trade: Trade): any {
   const token = process.env.TG_KEY;

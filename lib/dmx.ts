@@ -1,29 +1,6 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { getDate } from "./helpers/getDate";
 
-interface Trade {
-  __typename: string;
-  id: string;
-  account: string;
-  collateralToken: string;
-  collateralDelta: string;
-  collateral: string;
-  timestamp: Date;
-  isLong: boolean;
-  closedPosition: boolean | null;
-  liquidatedPosition: boolean | null;
-  settledTimestamp: boolean | null;
-  sizeDelta: string;
-  size: string;
-  averagePrice: string;
-}
-
-type JSONResponse = {
-  data?: {
-    trade: Omit<Trade, "fetchedAt">;
-  };
-};
-
 type ErrorResponse = {
   errors?: Array<{ message: string }>;
 };

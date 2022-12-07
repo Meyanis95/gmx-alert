@@ -19,13 +19,6 @@ interface Trade {
   averagePrice: string;
 }
 
-type JSONResponse = {
-  data?: {
-    trade: Omit<Trade, "fetchedAt">;
-  };
-  errors?: Array<{ message: string }>;
-};
-
 const addresses = [
   "0xfee7640faf953cb620a40c68c1d06bcc984032a1",
   "0xc48cdc9f5b35bb6679dbe9a36a359ffb2de8733e",
