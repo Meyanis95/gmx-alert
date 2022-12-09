@@ -47,10 +47,10 @@ const client = new ApolloClient({
 
 export async function getLastTrades() {
   let timestamp = getDate();
-  const trades = tradesQuery(timestamp);
+  const query = tradesQuery(timestamp);
   return client
     .query({
-      query: gql(trades),
+      query: gql(query),
       variables: {
         first: 1000,
       },
