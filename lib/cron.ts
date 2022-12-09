@@ -33,7 +33,7 @@ const addresses = [
   "0xb09c48582db808c8043d0eb982b9610d79d9c0e1",
   "0x36a26590360797e9795d31c103f87f79e52ecf7a",
   "0xb7dc41706c8d093ab3c83aff6146438813a2946d",
-  "0xab43d7a352767aa2001b1eaf26abc1c582a6985a",
+  "0x0b7c75a9689a84854256c7d5db7c87feb1bbbb8b",
 ];
 //Here I'll do all my fetch and checks
 export async function cron() {
@@ -46,6 +46,7 @@ export async function cron() {
         if (addresses[i] === element.account) {
           //Check if new trades
           let isInDb = await checkIfTxInDb(element.id);
+          console.log(isInDb);
           if (!isInDb) {
             //If new trades store them + send notification on TG
             await addTxInDb(element.id);
