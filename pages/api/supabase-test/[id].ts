@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import supabase from "@/lib/db/supabase";
+import { addTxInDb } from "@/lib/db/db";
 
 export default async function handler(
   _req: NextApiRequest,
@@ -10,34 +11,37 @@ export default async function handler(
   //   return res.status(500).json({ message: "Duplicate cron job" });
   // }
 
-  const { id } = _req.query;
+  let { id } = _req.query;
+  if (Array.isArray(id)) {
+    id = id.join("");
+  }
   console.log("request received at endpoint:", id);
 
-  async function checkIfTxInDb(txId: string | string[]) {
-    try {
-      const { data, error } = await supabase
-        .from("Transactions Ids")
-        .select("id")
-        .eq("id", txId);
+  // async function checkIfTxInDb(txId: string | string[]) {
+  //   try {
+  //     const { data, error } = await supabase
+  //       .from("Transactions Ids")
+  //       .select("id")
+  //       .eq("id", txId);
 
-      if (error) {
-        throw new Error(
-          `SupabaseError: query failed: \n${JSON.stringify(error)}`
-        );
-      }
+  //     if (error) {
+  //       throw new Error(
+  //         `SupabaseError: query failed: \n${JSON.stringify(error)}`
+  //       );
+  //     }
 
-      if (data?.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    } catch (error) {
-      return error;
-    }
-  }
+  //     if (data?.length === 0) {
+  //       return false;
+  //     } else {
+  //       return true;
+  //     }
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
 
   try {
-    const response = await checkIfTxInDb(id!);
+    const response = await addTxInDb(id!);
     //console.log("Cron job successful! Response:", response);
     res.status(200).json(response);
   } catch (err) {
