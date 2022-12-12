@@ -5,11 +5,18 @@ import axios from "axios";
 import { getDate } from "@/lib/helpers/getDate";
 
 export default function Home() {
-  // const fetchData = async () => {
-  //   await axios.get("/api/dmx-trades").then((response) => {
-  //     console.log(response.data);
-  //   });
-  // };
+  const fetchData = async () => {
+    await axios
+      .get("/api/supabasa-test", {
+        params: {
+          tradeId:
+            "Trade:0x05c179e9f700d54daa6b504585c3dc5c9cf0c726b3bae113421eb596400dd8af",
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+      });
+  };
 
   return (
     <div className={styles.container}>
