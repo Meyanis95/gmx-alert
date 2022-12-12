@@ -41,7 +41,7 @@ export async function cron() {
   try {
     const lastTrades = await getLastTrades();
 
-    lastTrades.map(async (element: Trade) => {
+    await lastTrades.map(async (element: Trade) => {
       for (let i = 0; i < addresses.length; i++) {
         if (addresses[i] === element.account) {
           //Check if new trades
@@ -56,6 +56,7 @@ export async function cron() {
         }
       }
     });
+
     return lastTrades;
   } catch (error) {
     return error;
