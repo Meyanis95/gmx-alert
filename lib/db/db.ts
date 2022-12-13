@@ -29,8 +29,6 @@ export async function addTxInDb(txId: string) {
       .from("Transactions Ids")
       .insert({ id: txId });
 
-    console.log(data);
-    console.log(error);
     if (error) {
       throw new Error(
         `SupabaseError: query failed: \n${JSON.stringify(error)}`

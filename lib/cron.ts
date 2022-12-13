@@ -33,7 +33,7 @@ const addresses = [
   "0xb09c48582db808c8043d0eb982b9610d79d9c0e1",
   "0x36a26590360797e9795d31c103f87f79e52ecf7a",
   "0xb7dc41706c8d093ab3c83aff6146438813a2946d",
-  "0x0c701e48af4836b9101abe392b987a78b0dcf037",
+  "0xbd66e95faab6fe5e696efdfeaaa09b6033c6ec43",
 ];
 //Here I'll do all my fetch and checks
 export async function cron() {
