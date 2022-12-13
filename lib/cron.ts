@@ -50,7 +50,7 @@ export async function cron() {
           console.log(isInDb);
           if (!isInDb) {
             //If new trades store them + send notification on TG
-            await addTxInDb(element.id);
+            addTxInDb(element.id);
             sendMessage(element);
           }
         }
