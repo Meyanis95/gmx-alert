@@ -45,9 +45,9 @@ export async function cron() {
       for (let i = 0; i < addresses.length; i++) {
         if (addresses[i] === element.account) {
           //Check if new trades
+          console.log("Trade from labelled address", element.id);
           let isInDb = await checkIfTxInDb(element.id);
           console.log(isInDb);
-          console.log(element.id);
           if (!isInDb) {
             //If new trades store them + send notification on TG
             await addTxInDb(element.id);
