@@ -46,3 +46,24 @@ export async function addTxInDb(txId: string) {
     return error;
   }
 }
+
+export async function getAllTxsInDb() {
+  try {
+    const { data, error } = await supabase
+      .from("Transactions Ids")
+      .select("id");
+
+    console.log("Data form getAll:", data);
+    console.log("Error form getAll:", error);
+
+    if (error) {
+      throw new Error(
+        `SupabaseError: query failed: \n${JSON.stringify(error)}`
+      );
+    }
+
+    return data;
+  } catch (error) {
+    return error;
+  }
+}

@@ -2,20 +2,11 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import axios from "axios";
-import { getDate } from "@/lib/helpers/getDate";
+import { getAllTxsInDb } from "@/lib/db/db";
 
 export default function Home() {
   const fetchData = async () => {
-    await axios
-      .get("/api/supabasa-test", {
-        params: {
-          tradeId:
-            "Trade:0x05c179e9f700d54daa6b504585c3dc5c9cf0c726b3bae113421eb596400dd8af",
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-      });
+    //await getAllTxsInDb();
   };
 
   return (
@@ -37,7 +28,13 @@ export default function Home() {
         </p>
 
         <div className={styles.grid}>
-          {/* <button onClick={getDate}>FETCH DATA</button> */}
+          {/* <button
+          onClick={() => {
+            fetchData;
+          }}
+          >
+            FETCH DATA
+          </button> */}
         </div>
       </main>
 

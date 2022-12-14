@@ -1,5 +1,5 @@
 import { getLastTrades } from "./dmx";
-import { checkIfTxInDb, addTxInDb } from "@/lib/db/db";
+import { checkIfTxInDb, addTxInDb, getAllTxsInDb } from "@/lib/db/db";
 import { sendMessage } from "./telegram";
 
 interface Trade {
@@ -33,20 +33,32 @@ const addresses = [
   "0xb09c48582db808c8043d0eb982b9610d79d9c0e1",
   "0x36a26590360797e9795d31c103f87f79e52ecf7a",
   "0xb7dc41706c8d093ab3c83aff6146438813a2946d",
-  "0xbd66e95faab6fe5e696efdfeaaa09b6033c6ec43",
+  "0x120ebfe81c44003cd5351731709e30f9681daf74",
 ];
+
+const check = (txs: any, txId: string): boolean => {
+  let response = false;
+  txs.map((tx: any) => {
+    if (tx.id === txId) {
+      response = true;
+    }
+  });
+  return response;
+};
+
 //Here I'll do all my fetch and checks
 export async function cron() {
   //Fetch data form TheGraph
   try {
     const lastTrades = await getLastTrades();
+    const txInDb = await getAllTxsInDb();
 
     await lastTrades.map(async (element: Trade) => {
       for (let i = 0; i < addresses.length; i++) {
         if (addresses[i] === element.account) {
           //Check if new trades
           console.log("Trade from labelled address", element.id);
-          let isInDb = await checkIfTxInDb(element.id);
+          let isInDb = check(txInDb, element.id);
           console.log(isInDb);
           if (!isInDb) {
             //If new trades store them + send notification on TG
