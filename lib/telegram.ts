@@ -28,9 +28,11 @@ export function sendMessage(trade: Trade): any {
       //`https://api.telegram.org/bot${token}/getMe`
     )
     .then((response) => {
+      console.log(response);
       return;
     })
     .catch((error) => {
+      console.log(error);
       return;
     });
 }

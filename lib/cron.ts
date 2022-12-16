@@ -38,7 +38,7 @@ const addresses = [
 
 const check = (txs: any, txId: string): boolean => {
   let response = false;
-  txs.map((tx: any) => {
+  txs.map((tx: Trade) => {
     if (tx.id === txId) {
       response = true;
     }
