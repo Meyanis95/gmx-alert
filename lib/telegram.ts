@@ -18,21 +18,21 @@ interface Trade {
   averagePrice: string;
 }
 
-export function sendMessage(trade: Trade): any {
+export async function sendMessage(trade: Trade) {
   const token = process.env.TG_KEY;
   const chat_id = process.env.CHAT_ID;
   const text = `New trade from ${shortenAddress(trade.account)}`;
-  return axios
+  return await axios
     .post(
       `https://api.telegram.org/bot${token}/sendMessage?text=${text}&chat_id=${chat_id}`
       //`https://api.telegram.org/bot${token}/getMe`
     )
     .then((response) => {
-      console.log(response);
+      console.log("response from tg api", response);
       return;
     })
     .catch((error) => {
-      console.log(error);
+      console.log("error from tg api", error);
       return;
     });
 }
