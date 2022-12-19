@@ -33,7 +33,7 @@ const addresses = [
   "0xb09c48582db808c8043d0eb982b9610d79d9c0e1",
   "0x36a26590360797e9795d31c103f87f79e52ecf7a",
   "0xb7dc41706c8d093ab3c83aff6146438813a2946d",
-  "0x120ebfe81c44003cd5351731709e30f9681daf74",
+  "0x8f7b9d11c58903c482608476040a625fcbe519a4",
 ];
 
 const check = (txs: any, txId: string): boolean => {

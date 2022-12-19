@@ -28,7 +28,7 @@ export async function sendMessage(trade: Trade) {
       //`https://api.telegram.org/bot${token}/getMe`
     )
     .then((response) => {
-      console.log("response from tg api", response);
+      console.log("response from tg api", response.data);
       return;
     })
     .catch((error) => {
